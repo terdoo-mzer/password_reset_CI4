@@ -1,0 +1,26 @@
+body {
+    background: #2d5986;
+}
+
+.form_container {
+    background-color: white;
+    margin-top: 50px;
+    width: 50%;
+    min-height: 400px;
+    padding: 50px;
+    border-radius: 25px;
+
+  
+    /* display: none !important; */
+}
+
+.breadcrumb {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headings {
+    text-align: center;
+}
