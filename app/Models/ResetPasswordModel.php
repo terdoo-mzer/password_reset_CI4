@@ -4,20 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class FormModel extends Model
+class ResetPasswordModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'registration';
-    protected $primaryKey       = 'user_id';
+    protected $table            = 'resetpassword';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
         'user_id',
-        'name',
-        'email',
-        'password'
+        'token',
+        'is_used',
+        'expiry'
     ];
 
     // Dates
@@ -44,54 +44,35 @@ class FormModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-
-
-    public function insertUser($uuid, $name, $email, $password)
-    {
-        $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
-
+    function inserData($user_id, $token, $is_used, $expiry) {
         $data = [
-            'user_id' => $uuid,
-            'name' => $name,
-            'email' => $email,
-            'password' => $encryptedPassword
+            'user_id' => $user_id,
+            'token' => $token,
+            'is_used' => $is_used,
+            'expiry' => $expiry
         ];
 
-        return $this->insert($data);
-    }
+        if($this->insert($data, $returnID = true)){
+            return $this->getInsertID();
+        };
 
-    public function getUser($email, $password=null)
-    {
-        // $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        // return $this->insert($data);
-        $user = $this->where('email', $email)->first();
-        $decryptPwd = password_verify($password, $user['password']);
-   
-        if ($decryptPwd) {
-            return $user;
-        }
         return false;
     }
 
-    public function findUser($email) {
-        $user = $this->where('email', $email)->first();
+
+    function findUser($id) {
+        $user = $this->where('id', $id)->first();
         if($user) {
             return $user;
         }
         return false;
     }
 
-
-    function updatePassword($user_id,$pwd)
-    {
-        $encryptedPassword = password_hash($pwd, PASSWORD_DEFAULT);
+    function update_is_used($id) {
         $data = [
-            'password' => $encryptedPassword
+            'is_used' => true
         ];
-        // $updateUserPwd = $this->where('user_id', $user_id)->update($data);
-
-        if($this->update($user_id,$data)) {
+        if( $this->update($id,$data)) {
             return true;
         }
         return false;

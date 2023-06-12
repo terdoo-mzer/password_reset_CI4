@@ -17,8 +17,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-    <form method="post">
-        
+    <form method="post"> 
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Full Name</label>
             <input type="text" name="name" class="form-control" id="name"  value="<?= isset($_POST['name']) ? $_POST['name'] : '' ?>">

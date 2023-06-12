@@ -30,11 +30,14 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 // $routes->get('/', 'Home::index');
-$routes->match(['get', 'post'],'/signup', 'FormController::signup');
-$routes->match(['post', 'get'], '/login', 'FormController::login');
-$routes->match(['post', 'get'],'/forgot-password', 'FormController::forgotPwd');
+$routes->match(['get', 'post'],'/signup', 'FormController::signup', ['filter' => 'noauth']);
+$routes->match(['post', 'get'], '/login', 'FormController::login',  ['filter' => 'noauth']);
+$routes->match(['post', 'get'],'/forgot-password', 'FormController::forgotPwd',  ['filter' => 'noauth']);
+$routes->match(['post', 'get'],'/reset', 'FormController::reset',  ['filter' => 'noauth']);
 // $routes->get('/mail', 'FormController::sendMail');
-
+$routes->get('profile', 'DashboardController::profile', ['filter' => 'auth']);
+$routes->get('reset/error', 'FormController::resetError',  ['filter' => 'noauth']);
+$routes->get('logout', 'FormController::logout');
 
 
 /*

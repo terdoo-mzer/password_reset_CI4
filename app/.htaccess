@@ -1,6 +1,31 @@
-<IfModule authz_core_module>
+<!-- <IfModule authz_core_module>
     Require all denied
 </IfModule>
 <IfModule !authz_core_module>
     Deny from all
-</IfModule>
+</IfModule> -->
+
+
+# Disable directory browsing
+Options -Indexes
+
+# Set the default character set
+AddDefaultCharset utf-8
+
+# Turn on the rewrite engine
+RewriteEngine On
+
+# Handle HTTP authorization headers
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Redirect Trailing Slashes If Not A Folder...
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^(.+)/$ $1 [L,R=301]
+
+# Handle Front Controller
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+
